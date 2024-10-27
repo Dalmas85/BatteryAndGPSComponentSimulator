@@ -1,4 +1,5 @@
 ﻿
+using Microsoft.Extensions.Configuration;
 using System.IO.Ports;
 
 
@@ -8,10 +9,14 @@ namespace BatteryAndGPSComponentSimulator
     {
         public static void Main()
         {
+            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, false);
+            var settings = builder.Build();
+            var port = settings["Port"];
+
             // Set up the serial port
             SerialPort serialPort = new SerialPort
             {
-                PortName = "COM1", // Change COM port as necessary
+                PortName = port, // Change COM port as necessary
                 BaudRate = 9600,
                 Parity = Parity.None,
                 DataBits = 8,

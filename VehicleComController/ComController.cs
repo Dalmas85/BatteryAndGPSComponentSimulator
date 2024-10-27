@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using Microsoft.Extensions.Configuration;
+using System.IO.Ports;
 
 namespace VehicleComController
 {
@@ -7,10 +8,15 @@ namespace VehicleComController
     {
         static void Main(string[] args)
         {
+            var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", false, false);
+            var settings = builder.Build();
+            var port = settings["Port"];
+
+
             // Set up the serial port to read from
             SerialPort serialPortControlUnits = new()
             {
-                PortName = "COM2", // Change COM port as necessary
+                PortName = port, // Change COM port as necessary
                 BaudRate = 9600,
                 Parity = Parity.None,
                 DataBits = 8,
